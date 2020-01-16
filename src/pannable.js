@@ -41,8 +41,6 @@ export function pannable(node) {
 	node.addEventListener('mousedown', onMousedown);
 
 	return {
-		destroy() {
-			node.removeEventListener('mousedown', onMousedown);
-		}
+		destroy: () => (node.removeEventListener('mousedown', onMousedown))
 	};
 }
