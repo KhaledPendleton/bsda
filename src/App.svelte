@@ -1,5 +1,5 @@
 <script>
-	import { openPanels, panelZIndex } from './stores.js';
+	import { openPanels } from './stores.js';
 
 	import Panel from './Panel.svelte';
 
