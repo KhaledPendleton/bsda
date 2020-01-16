@@ -1,7 +1,5 @@
 export function stackable(node) {
-    let zIndex;
-
-    function onClick(event) {
+    function onClick() {
         const data = { detail: { target: node } }
         const stack = new CustomEvent('stack', data);
         node.dispatchEvent(stack);
