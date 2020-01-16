@@ -1,7 +1,12 @@
 <script>
-	import { pannable } from './pannable.js';
-	import { spring } from 'svelte/motion';
+    import { createEventDispatcher } from 'svelte';
+    import { spring } from 'svelte/motion';
+    
+    import { pannable } from './pannable.js';
 
+    export let text;
+
+    const dispatch = createEventDispatcher();
 	const coords = spring({ x: 0, y: 0 }, {
 		stiffness: 0.2,
 		damping: 0.4
@@ -21,6 +26,10 @@
 	function onPanend(event) {
 		coords.stiffness = 0.2;
 		coords.damping = 0.4;
+    }
+
+    function onCloseClick(event) {
+        dispatch('close', {});
     }
     
     $: style = `transform: translate(${$coords.x}px, ${$coords.y}px)`;
@@ -42,9 +51,12 @@
 </style>
 
 <div class="panel"
-	use:pannable
+    use:pannable
 	on:panstart={onPanstart}
 	on:panmove={onPanmove}
-	on:panend={onPanend}
+    on:panend={onPanend}
 	{style}
-></div>
+>
+    <button on:click={onCloseClick}>close</button>
+    <p>{text}</p>
+</div>

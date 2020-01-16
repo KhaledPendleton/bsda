@@ -1,30 +1,37 @@
 <script>
-	export let name;
-</script>
+	import { openPanels, panelZIndex } from './stores.js';
 
-<main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-</main>
+	import Panel from './Panel.svelte';
 
-<style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
+	let uid = 1;
+
+	let panels = [
+		{ id: uid++ },
+		{ id: uid++ },
+		{ id: uid++ },
+		{ id: uid++ },
+		{ id: uid++ }
+	];
+
+	function checkIsOpen(panel) {
+		return ($openPanels.filter(p => p === panel).length > 0);
 	}
 
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
+	function open(panel) {
+		if (!checkIsOpen(panel)) {
+			openPanels.set($openPanels.concat(panel));
 		}
 	}
-</style>
+
+	function close(panel) {
+		openPanels.update(op => op.filter(p => p !== panel));
+	}
+</script>
+
+{#each $openPanels as panel (panel.id)}
+	<Panel on:close={ () => close(panel) } text={panel.id} />
+{/each}
+
+{#each panels as panel (panel.id)}
+	<button on:click={() => open(panel)}>open {panel.id}</button>
+{/each}
